@@ -25,42 +25,27 @@
 
 #pragma once
 
-#include <QtCore/QByteArray>
-
-#include "public/Levels.hpp"
-#include "public/Context.hpp"
-
-#define GC_LOG_INFO(_module) \
-	::GlazedCake::Context(::GlazedCake::Level::Information, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
-
-#define GC_LOG_TRACE(_module)  \
-	::GlazedCake::Context(::GlazedCake::Level::Trace, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
-
-#define GC_LOG_WARN(_module) \
-	::GlazedCake::Context(::GlazedCake::Level::Warning, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
-
-#define GC_LOG_ERROR(_module) \
-	::GlazedCake::Context(::GlazedCake::Level::Error, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
-
-#define GC_LOG_FATAL(_module) \
-	::GlazedCake::Context(::GlazedCake::Level::Fatal, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
-
 namespace GlazedCake {
 
-	class Printer
+	enum class Level
 	{
-
-	public:
-		static Printer& get();
-
-		static void setInstance(Printer* instance);
-
-		void write(Level level, quint16 module, const char* fileName, int line, const char* message);
-
-	private:
-		static Printer* s_instance;
-		static bool s_instanceManaged;
-
+		Information,
+		Trace,
+		Warning,
+		Error,
+		Fatal
 	};
+
+	inline const char* LevelToString(Level level)
+	{
+		static const char* LevelToStringMap[] = {
+			"INFO",
+			"TRACE",
+			"WARN",
+			"ERROR",
+			"FATAL"
+		};
+		return LevelToStringMap[static_cast<size_t>(level)];
+	}
 
 };

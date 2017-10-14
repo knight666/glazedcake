@@ -24,3 +24,31 @@
 */
 
 #include "GlazedCake.hpp"
+
+namespace GlazedCake {
+
+	Printer* Printer::s_instance = new Printer();
+	bool Printer::s_instanceManaged = true;
+
+	Printer& Printer::get()
+	{
+		return *s_instance;
+	}
+
+	void Printer::setInstance(Printer* instance)
+	{
+		if (s_instanceManaged &&
+			s_instance != nullptr)
+		{
+			delete s_instance;
+		}
+
+		s_instance = instance;
+		s_instanceManaged = false;
+	}
+
+	void Printer::write(Level level, quint16 module, const char* fileName, int line, const char* message)
+	{
+	}
+
+};
