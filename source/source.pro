@@ -4,11 +4,14 @@ TARGET = GlazedCake
 TEMPLATE = lib
 
 HEADERS += \
-    $$GLAZED_CAKE_BASE/include/public/Levels.hpp \
+    $$GLAZED_CAKE_BASE/include/public/sinks/SinkDebugOutput.hpp \
     $$GLAZED_CAKE_BASE/include/public/Context.hpp \
+    $$GLAZED_CAKE_BASE/include/public/Levels.hpp \
+    $$GLAZED_CAKE_BASE/include/public/Sink.hpp \
     $$GLAZED_CAKE_BASE/include/GlazedCake.hpp
 
 SOURCES += \
+    sinks/SinkDebugOutput.cpp \
     GlazedCake.cpp \
     Context.cpp
 

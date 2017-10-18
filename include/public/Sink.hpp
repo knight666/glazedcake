@@ -23,28 +23,22 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "public/Context.hpp"
+#pragma once
 
-#include "GlazedCake.hpp"
+#include "Levels.hpp"
 
 namespace GlazedCake {
 
-	Context::Context(Printer* printer, Level level, quint16 module, const char* filePath, int line)
-		: QTextStream(&m_message)
-		, m_printer(printer)
-		, m_level(level)
-		, m_module(module)
-		, m_line(line)
+	class Sink
 	{
-		strncpy_s(m_filePath, filePath, std::min<size_t>(strlen(filePath), static_cast<size_t>(_MAX_PATH - 1)));
-	}
 
-	Context::~Context()
-	{
-		m_message.append('\n');
-		QByteArray message = m_message.toUtf8();
+	public:
+		virtual ~Sink()
+		{
+		}
 
-		m_printer->write(m_module, m_level, m_filePath, m_line, message.constData());
-	}
+		virtual void write(Level level, const char* timestamp, const char* filePath, int line, const char* message) = 0;
+
+	};
 
 };

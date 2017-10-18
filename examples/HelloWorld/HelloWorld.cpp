@@ -24,8 +24,15 @@
 */
 
 #include <GlazedCake.hpp>
+#include <public/sinks/SinkDebugOutput.hpp>
 
 int main(int argc, const char** argv)
 {
+	QSharedPointer<GlazedCake::Sink> sink(new GlazedCake::SinkDebugOutput());
+
+	GlazedCake::Printer::get().addSink(sink);
+
+	GC_LOG_INFO(HelloWorld) << "Hello World!";
+
 	return 0;
 }

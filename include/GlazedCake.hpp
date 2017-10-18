@@ -26,9 +26,12 @@
 #pragma once
 
 #include <QtCore/QByteArray>
+#include <QtCore/QSharedPointer>
+#include <QtCore/QVector>
 
-#include "public/Levels.hpp"
 #include "public/Context.hpp"
+#include "public/Levels.hpp"
+#include "public/Sink.hpp"
 
 #define GC_LOG_INFO(_module) \
 	::GlazedCake::Context(::GlazedCake::Level::Information, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
@@ -51,15 +54,22 @@ namespace GlazedCake {
 	{
 
 	public:
-		static Printer& get();
+		Printer();
+		~Printer();
 
+		static Printer& get();
 		static void setInstance(Printer* instance);
 
-		void write(Level level, quint16 module, const char* fileName, int line, const char* message);
+		void addSink(QSharedPointer<Sink> sink);
+
+		void write(quint16 module, Level level, const char* filePath, int line, const char* message);
 
 	private:
 		static Printer* s_instance;
 		static bool s_instanceManaged;
+
+	private:
+		QVector<QSharedPointer<Sink>> m_sinks;
 
 	};
 
