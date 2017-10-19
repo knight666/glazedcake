@@ -25,7 +25,9 @@
 
 #pragma once
 
-#include "Levels.hpp"
+#include "public/Base.hpp"
+
+#include "public/Levels.hpp"
 
 namespace GlazedCake {
 

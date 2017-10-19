@@ -25,10 +25,6 @@
 
 #include "public/sinks/SinkDebugOutput.hpp"
 
-#include <QtCore/qsystemdetection.h>
-
-#include <Windows.h>
-
 namespace GlazedCake {
 
 	void SinkDebugOutput::write(Level level, const char* timestamp, const char* filePath, int line, const char* message)

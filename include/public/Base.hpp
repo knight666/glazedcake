@@ -25,19 +25,21 @@
 
 #pragma once
 
-#include "public/Base.hpp"
+// C/C++
 
-#include "public/Sink.hpp"
+#include <stdint.h>
+#include <time.h>
 
-namespace GlazedCake {
+// Qt
 
-	class SinkDebugOutput
-		: public Sink
-	{
+#include <QtCore/qsystemdetection.h>
 
-	public:
-		virtual void write(Level level, const char* timestamp, const char* filePath, int line, const char* message) override;
+#include <QtCore/QByteArray>
+#include <QtCore/QSharedPointer>
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
+#include <QtCore/QVector>
 
-	};
+// Windows
 
-};
+#include <Windows.h>

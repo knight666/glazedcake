@@ -25,8 +25,6 @@
 
 #include "GlazedCake.hpp"
 
-#include <time.h>
-
 namespace GlazedCake {
 
 	Printer* Printer::s_instance = nullptr;

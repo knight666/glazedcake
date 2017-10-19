@@ -25,9 +25,7 @@
 
 #pragma once
 
-#include <QtCore/QByteArray>
-#include <QtCore/QSharedPointer>
-#include <QtCore/QVector>
+#include "public/Base.hpp"
 
 #include "public/Context.hpp"
 #include "public/Levels.hpp"

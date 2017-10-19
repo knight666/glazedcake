@@ -25,8 +25,7 @@
 
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QTextStream>
+#include "public/Base.hpp"
 
 #include "public/Levels.hpp"
 

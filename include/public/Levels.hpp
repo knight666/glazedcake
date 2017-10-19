@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include "public/Base.hpp"
+
 namespace GlazedCake {
 
 	enum class Level
