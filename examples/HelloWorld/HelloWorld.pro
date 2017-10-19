@@ -9,6 +9,9 @@ SOURCES += \
 INCLUDEPATH += \
     $$GLAZED_CAKE_BASE/include
 
+LIBS += \
+	-lglazedcake
+
 QT += core
 
 OBJECTS_DIR = $$GLAZED_CAKE_BASE/build

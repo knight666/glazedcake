@@ -28,6 +28,9 @@
 
 int main(int argc, const char** argv)
 {
+	(void)argc;
+	(void)argv;
+
 	QSharedPointer<GlazedCake::Sink> sink(new GlazedCake::SinkDebugOutput());
 
 	GlazedCake::Printer::get().addSink(sink);

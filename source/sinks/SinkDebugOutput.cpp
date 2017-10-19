@@ -25,6 +25,8 @@
 
 #include "public/sinks/SinkDebugOutput.hpp"
 
+#include <QtCore/qsystemdetection.h>
+
 #include <Windows.h>
 
 namespace GlazedCake {
@@ -42,8 +44,8 @@ namespace GlazedCake {
 			timestamp,
 			LevelToString(level));
 
-		::OuputDebugStringA(formatted);
-		::OuputDebugStringA(message);
+		::OutputDebugStringA(formatted);
+		::OutputDebugStringA(message);
 	}
 
 };

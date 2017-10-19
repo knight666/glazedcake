@@ -2,4 +2,26 @@
 build*
 
 # Qt
+*.qmake.stash
 *.user
+
+# Visual Studio
+ipch/*
+*_UpgradeReport_Files/*
+*.exp
+*.idb
+*.ilk
+*.ncv
+*.opensdf
+*.pdb
+*.psess
+*.sdf
+*.sln
+*.suo
+*.targets
+*.VC.db
+*.VC.opendb
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.vspx

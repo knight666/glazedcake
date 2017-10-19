@@ -20,6 +20,10 @@ INCLUDEPATH += \
 
 QT += core
 
+win32 {
+	LIBS += -lkernel32
+}
+
 OBJECTS_DIR = $$GLAZED_CAKE_BASE/build
 MOC_DIR = $$GLAZED_CAKE_BASE/build
 DESTDIR = $$GLAZED_CAKE_BASE/lib

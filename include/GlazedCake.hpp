@@ -33,20 +33,23 @@
 #include "public/Levels.hpp"
 #include "public/Sink.hpp"
 
+#define GC_MODULE_CHECKSUM(_module) \
+	qChecksum(#_module, static_cast<uint>(strlen(#_module)))
+
 #define GC_LOG_INFO(_module) \
-	::GlazedCake::Context(::GlazedCake::Level::Information, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Information, GC_MODULE_CHECKSUM(_module), __FILE__, __LINE__)
 
 #define GC_LOG_TRACE(_module)  \
-	::GlazedCake::Context(::GlazedCake::Level::Trace, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Trace, GC_MODULE_CHECKSUM(_module), __FILE__, __LINE__)
 
 #define GC_LOG_WARN(_module) \
-	::GlazedCake::Context(::GlazedCake::Level::Warning, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Warning, GC_MODULE_CHECKSUM(_module), __FILE__, __LINE__)
 
 #define GC_LOG_ERROR(_module) \
-	::GlazedCake::Context(::GlazedCake::Level::Error, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Error, GC_MODULE_CHECKSUM(_module), __FILE__, __LINE__)
 
 #define GC_LOG_FATAL(_module) \
-	::GlazedCake::Context(::GlazedCake::Level::Fatal, qChecksum(#_module, strlen(#_module)), __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Fatal, GC_MODULE_CHECKSUM(_module), __FILE__, __LINE__)
 
 namespace GlazedCake {
 
