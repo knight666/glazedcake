@@ -10,6 +10,7 @@ ProgramOptions = None
 DevEnvPath = None
 MsBuildPath = None
 QtSdkPath = None
+BuildDir = None
 
 def RunCommand(args, expected = 0):
 	with subprocess.Popen(args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) as proc:
@@ -18,6 +19,27 @@ def RunCommand(args, expected = 0):
 		proc.communicate()
 		print('')
 		return proc.returncode == expected
+
+def ResolvePath(path):
+	path = os.path.abspath(path)
+	if not os.path.exists(path):
+		os.makedirs(path, 0o777, True)
+
+	return path
+
+def CopyFile(src, dst = None):
+	filename = os.path.basename(src)
+
+	if dst:
+		dst = os.path.abspath(dst)
+	else:
+		dst = os.path.abspath(BuildDir + '/' + filename)
+
+	ResolvePath(os.path.dirname(dst))
+
+	if not os.path.exists(dst) or ProgramOptions.force:
+		print('\tCopying "' + filename + "'...")
+		shutil.copy(src, dst)
 
 def SetupVSEnv():
 	path = os.path.abspath(os.getenv('VS140COMNTOOLS') + '..\\..\\VC\\vcvarsall.bat')
@@ -69,6 +91,23 @@ def ToolsQt():
 
 	return True
 
+def DependencyQt():
+	print('Qt:')
+
+	bin_dir = QtSdkPath + '/bin'
+
+	qtlibs = [
+		'Qt5Core',
+	]
+	for lib in qtlibs:
+		CopyFile(bin_dir + '/' + lib + '.dll')
+		CopyFile(bin_dir + '/' + lib + 'd.dll')
+
+	print('\tINSTALLED')
+	print('')
+
+	return True
+
 def GenerateSolution():
 	solution_path = os.path.abspath('GlazedCake.sln')
 	if os.path.exists(solution_path) and not ProgramOptions.force:
@@ -102,9 +141,13 @@ if __name__ == '__main__':
 	)
 	ProgramOptions = parser.parse_args()
 
+	# globals
+
+	BuildDir = ResolvePath('build')
+
 	# tools
 
-	print('[      TOOLS      ]')
+	print('[     TOOLS      ]')
 	print('')
 
 	if not ToolsVisualStudio():
@@ -113,14 +156,22 @@ if __name__ == '__main__':
 	if not ToolsQt():
 		exit(1)
 
+	# dependencies
+
+	print('[  DEPENDENCIES  ]')
+	print('')
+
+	if not DependencyQt():
+		exit(1)
+
 	# project
 
-	print('[     PROJECT     ]')
+	print('[    PROJECT     ]')
 	print('')
 
 	if not GenerateSolution():
 		exit(1)
 
-	print('[       DONE      ]')
+	print('[      DONE      ]')
 
 	exit(0)
