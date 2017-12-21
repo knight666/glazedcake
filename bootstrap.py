@@ -110,7 +110,7 @@ def DependencyQt():
 
 def GenerateSolution():
 	solution_path = os.path.abspath('GlazedCake.sln')
-	if os.path.exists(solution_path) and not ProgramOptions.force:
+	if os.path.exists(solution_path) and not ProgramOptions.force and not ProgramOptions.solution:
 		print('\tSolution found.')
 		print('')
 
@@ -138,6 +138,12 @@ if __name__ == '__main__':
 		dest = 'force',
 		action = 'store_true',
 		help = 'do not skip steps if they were already completed'
+	)
+	parser.add_argument(
+		'--solution',
+		dest = 'solution',
+		action = 'store_true',
+		help = 'rebuild the Visual Studio solution'
 	)
 	ProgramOptions = parser.parse_args()
 

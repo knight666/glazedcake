@@ -23,20 +23,40 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <GlazedCake.hpp>
-#include <public/sinks/SinkDebugOutput.hpp>
+#include "public/sinks/SinkFile.hpp"
 
-#include <QtCore/QCoreApplication>
+namespace GlazedCake {
 
-int main(int argc, char** argv)
-{
-	QCoreApplication app(argc, argv);
+	SinkFile::SinkFile(const QString& filePath)
+		: m_fileHandle(filePath)
+	{
+		// clear file
 
-	QSharedPointer<GlazedCake::Sink> sink(new GlazedCake::SinkDebugOutput());
+		if (m_fileHandle.open(QIODevice::WriteOnly))
+		{
+			m_fileHandle.close();
+		}
+	}
 
-	GlazedCake::Printer::get().addSink(sink);
+	void SinkFile::write(Level level, const char* timestamp, const char* filePath, int line, const char* message)
+	{
+		(void)filePath;
+		(void)line;
 
-	GC_LOG_INFO(HelloWorld) << "Hello World!";
+		if (!m_fileHandle.open(QIODevice::WriteOnly | QIODevice::Append))
+		{
+			return;
+		}
 
-	return 0;
-}
+		char formatted[1024] = { 0 };
+		_snprintf(formatted, sizeof(formatted), "(%s) [%s] ",
+			timestamp,
+			LevelToString(level));
+
+		m_fileHandle.write(formatted);
+		m_fileHandle.write(message);
+
+		m_fileHandle.close();
+	}
+
+};

@@ -7,6 +7,7 @@ TARGET = GlazedCake
 
 HEADERS += \
     $$GLAZED_CAKE_BASE/include/public/sinks/SinkDebugOutput.hpp \
+    $$GLAZED_CAKE_BASE/include/public/sinks/SinkFile.hpp \
     $$GLAZED_CAKE_BASE/include/public/Base.hpp \
     $$GLAZED_CAKE_BASE/include/public/Context.hpp \
     $$GLAZED_CAKE_BASE/include/public/Levels.hpp \
@@ -15,6 +16,7 @@ HEADERS += \
 
 SOURCES += \
     sinks/SinkDebugOutput.cpp \
+    sinks/SinkFile.cpp \
     GlazedCake.cpp \
     Context.cpp
 

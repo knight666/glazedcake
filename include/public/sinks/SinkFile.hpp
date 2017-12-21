@@ -23,20 +23,28 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <GlazedCake.hpp>
-#include <public/sinks/SinkDebugOutput.hpp>
+#pragma once
 
-#include <QtCore/QCoreApplication>
+#include "public/Base.hpp"
 
-int main(int argc, char** argv)
-{
-	QCoreApplication app(argc, argv);
+#include <QtCore/QFile>
 
-	QSharedPointer<GlazedCake::Sink> sink(new GlazedCake::SinkDebugOutput());
+#include "public/Sink.hpp"
 
-	GlazedCake::Printer::get().addSink(sink);
+namespace GlazedCake {
 
-	GC_LOG_INFO(HelloWorld) << "Hello World!";
+	class SinkFile
+		: public Sink
+	{
 
-	return 0;
-}
+	public:
+		SinkFile(const QString& filePath);
+
+		virtual void write(Level level, const char* timestamp, const char* filePath, int line, const char* message) override;
+
+	private:
+		QFile m_fileHandle;
+
+	};
+
+};

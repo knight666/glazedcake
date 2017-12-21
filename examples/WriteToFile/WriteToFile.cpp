@@ -24,7 +24,7 @@
 */
 
 #include <GlazedCake.hpp>
-#include <public/sinks/SinkDebugOutput.hpp>
+#include <public/sinks/SinkFile.hpp>
 
 #include <QtCore/QCoreApplication>
 
@@ -32,11 +32,17 @@ int main(int argc, char** argv)
 {
 	QCoreApplication app(argc, argv);
 
-	QSharedPointer<GlazedCake::Sink> sink(new GlazedCake::SinkDebugOutput());
+	QSharedPointer<GlazedCake::Sink> sinkPizza(new GlazedCake::SinkFile(QCoreApplication::applicationDirPath() + "/pizza.log"));
+	QSharedPointer<GlazedCake::Sink> sinkDonut(new GlazedCake::SinkFile(QCoreApplication::applicationDirPath() + "/donut.log"));
 
-	GlazedCake::Printer::get().addSink(sink);
+	GlazedCake::Printer::get().addSink(sinkPizza, "Pizza");
+	GlazedCake::Printer::get().addSink(sinkPizza, "Breakfast");
+	GlazedCake::Printer::get().addSink(sinkDonut, "Donut");
+	GlazedCake::Printer::get().addSink(sinkDonut, "Breakfast");
 
-	GC_LOG_INFO(HelloWorld) << "Hello World!";
+	GC_LOG_INFO(Pizza) << "Now with *MORE* cheese!";
+	GC_LOG_INFO(Donut) << "Loved by law enforcement everywhere!";
+	GC_LOG_INFO(Breakfast) << "Part of a wholesome breakfast!";
 
 	return 0;
 }
