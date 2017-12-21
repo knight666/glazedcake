@@ -29,7 +29,7 @@
 
 namespace GlazedCake {
 
-	Context::Context(Printer* printer, Level level, quint16 module, const char* filePath, int line)
+	Context::Context(Printer* printer, Level level, const Module& module, const char* filePath, int line)
 		: QTextStream(&m_message)
 		, m_printer(printer)
 		, m_level(level)

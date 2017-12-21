@@ -30,7 +30,7 @@ namespace GlazedCake {
 	Printer* Printer::s_instance = nullptr;
 	bool Printer::s_instanceManaged = false;
 
-	const quint16 Printer::ModuleAll = GC_MODULE_CHECKSUM("all");
+	const Module Printer::ModuleAll("all");
 
 	Printer::Printer()
 	{
@@ -67,7 +67,7 @@ namespace GlazedCake {
 		s_instanceManaged = false;
 	}
 
-	void Printer::addSink(QSharedPointer<Sink> sink, quint16 module /*= ModuleAll*/)
+	void Printer::addSink(QSharedPointer<Sink> sink, const Module& module /*= ModuleAll*/)
 	{
 		auto found = m_sinksByModule.find(module);
 		if (found != m_sinksByModule.end())
@@ -82,7 +82,7 @@ namespace GlazedCake {
 		}
 	}
 
-	void Printer::write(quint16 module, Level level, const char* filePath, int line, const char* message)
+	void Printer::write(const Module& module, Level level, const char* filePath, int line, const char* message)
 	{
 		QVector<QSharedPointer<Sink>>* module_sinks = nullptr;
 

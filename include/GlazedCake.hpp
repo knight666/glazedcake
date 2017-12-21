@@ -29,25 +29,23 @@
 
 #include "public/Context.hpp"
 #include "public/Levels.hpp"
+#include "public/Module.hpp"
 #include "public/Sink.hpp"
 
-#define GC_MODULE_CHECKSUM(_module) \
-	qChecksum(#_module, static_cast<uint>(strlen(#_module)))
-
 #define GC_LOG_INFO(_module) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Information, GC_MODULE_CHECKSUM(_module), __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Information, ::GlazedCake::Module(#_module), __FILE__, __LINE__)
 
 #define GC_LOG_TRACE(_module)  \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Trace, GC_MODULE_CHECKSUM(_module), __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Trace, ::GlazedCake::Module(#_module), __FILE__, __LINE__)
 
 #define GC_LOG_WARN(_module) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Warning, GC_MODULE_CHECKSUM(_module), __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Warning, ::GlazedCake::Module(#_module), __FILE__, __LINE__)
 
 #define GC_LOG_ERROR(_module) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Error, GC_MODULE_CHECKSUM(_module), __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Error, ::GlazedCake::Module(#_module), __FILE__, __LINE__)
 
 #define GC_LOG_FATAL(_module) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Fatal, GC_MODULE_CHECKSUM(_module), __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Fatal, ::GlazedCake::Module(#_module), __FILE__, __LINE__)
 
 namespace GlazedCake {
 
@@ -55,7 +53,7 @@ namespace GlazedCake {
 	{
 
 	public:
-		static const quint16 ModuleAll;
+		static const Module ModuleAll;
 
 	public:
 		Printer();
@@ -66,18 +64,18 @@ namespace GlazedCake {
 
 		inline void addSink(QSharedPointer<Sink> sink, const char* moduleName)
 		{
-			return addSink(sink, qChecksum(moduleName, static_cast<uint>(strlen(moduleName))));
+			return addSink(sink, Module(moduleName));
 		}
-		void addSink(QSharedPointer<Sink> sink, quint16 module = ModuleAll);
+		void addSink(QSharedPointer<Sink> sink, const Module& module = ModuleAll);
 
-		void write(quint16 module, Level level, const char* filePath, int line, const char* message);
+		void write(const Module& module, Level level, const char* filePath, int line, const char* message);
 
 	private:
 		static Printer* s_instance;
 		static bool s_instanceManaged;
 
 	private:
-		QHash<quint16, QVector<QSharedPointer<Sink>>> m_sinksByModule;
+		QHash<Module, QVector<QSharedPointer<Sink>>> m_sinksByModule;
 
 	};
 

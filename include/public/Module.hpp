@@ -27,28 +27,68 @@
 
 #include "public/Base.hpp"
 
-#include "public/Levels.hpp"
-#include "public/Module.hpp"
-
 namespace GlazedCake {
 
-	class Printer;
-
-	class Context
-		: public QTextStream
+	class Module
 	{
 
 	public:
-		Context(Printer* printer, Level level, const Module& module, const char* filePath, int line);
-		~Context();
+		Module(const char* name)
+		{
+			build(name, static_cast<uint>(strlen(name)));
+		}
+
+		Module(const char* name, uint nameLength)
+		{
+			build(name, nameLength);
+		}
+
+		operator quint16() const
+		{
+			return m_checksum;
+		}
+
+		bool operator < (const Module& other) const
+		{
+			return m_checksum < other.m_checksum;
+		}
+
+		bool operator == (const Module& other) const
+		{
+			return m_checksum == other.m_checksum;
+		}
 
 	private:
-		Printer* m_printer;
-		Level m_level;
-		Module m_module;
-		char m_filePath[_MAX_PATH] = { 0 };
-		int m_line;
-		QString m_message;
+		inline void build(const char* name, uint nameLength)
+		{
+			if (nameLength < 1)
+			{
+				return;
+			}
+
+			// very straight-forward case folding, pretend UTF-8 doesn't exist!
+
+			char folded[32] = { 0 };
+			uint length = std::min<uint>(static_cast<uint>(sizeof(folded)), nameLength) - 1;
+
+			for (uint i = 0; i < length; ++i)
+			{
+				if (name[i] >= 'A' &&
+					name[i] <= 'Z')
+				{
+					folded[i] = name[i] + 32;
+				}
+				else
+				{
+					folded[i] = name[i];
+				}
+			}
+
+			m_checksum = qChecksum(folded, length);
+		}
+
+	private:
+		quint16 m_checksum = 0xFFFF;
 
 	};
 
