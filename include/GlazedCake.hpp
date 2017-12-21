@@ -55,13 +55,20 @@ namespace GlazedCake {
 	{
 
 	public:
+		static const quint16 ModuleAll;
+
+	public:
 		Printer();
 		~Printer();
 
 		static Printer& get();
 		static void setInstance(Printer* instance);
 
-		void addSink(QSharedPointer<Sink> sink);
+		inline void addSink(QSharedPointer<Sink> sink, const char* moduleName)
+		{
+			return addSink(sink, qChecksum(moduleName, static_cast<uint>(strlen(moduleName))));
+		}
+		void addSink(QSharedPointer<Sink> sink, quint16 module = ModuleAll);
 
 		void write(quint16 module, Level level, const char* filePath, int line, const char* message);
 
@@ -70,7 +77,7 @@ namespace GlazedCake {
 		static bool s_instanceManaged;
 
 	private:
-		QVector<QSharedPointer<Sink>> m_sinks;
+		QHash<quint16, QVector<QSharedPointer<Sink>>> m_sinksByModule;
 
 	};
 

@@ -30,6 +30,8 @@ namespace GlazedCake {
 	Printer* Printer::s_instance = nullptr;
 	bool Printer::s_instanceManaged = false;
 
+	const quint16 Printer::ModuleAll = GC_MODULE_CHECKSUM("all");
+
 	Printer::Printer()
 	{
 		if (s_instance == nullptr)
@@ -65,14 +67,34 @@ namespace GlazedCake {
 		s_instanceManaged = false;
 	}
 
-	void Printer::addSink(QSharedPointer<Sink> sink)
+	void Printer::addSink(QSharedPointer<Sink> sink, quint16 module /*= ModuleAll*/)
 	{
-		m_sinks.push_back(sink);
+		auto found = m_sinksByModule.find(module);
+		if (found != m_sinksByModule.end())
+		{
+			found.value().push_back(sink);
+		}
+		else
+		{
+			QVector<QSharedPointer<Sink>> sinks;
+			sinks.push_back(sink);
+			m_sinksByModule.insert(module, sinks);
+		}
 	}
 
 	void Printer::write(quint16 module, Level level, const char* filePath, int line, const char* message)
 	{
-		(void)module;
+		QVector<QSharedPointer<Sink>>* module_sinks = nullptr;
+
+		auto found = m_sinksByModule.find(module);
+		if (found != m_sinksByModule.end())
+		{
+			module_sinks = &found.value();
+		}
+		else
+		{
+			module_sinks = &m_sinksByModule[ModuleAll];
+		}
 
 		auto current_time = time(0);
 		auto now = localtime(&current_time);
@@ -83,7 +105,7 @@ namespace GlazedCake {
 			now->tm_min,
 			now->tm_sec);
 
-		for (auto sink : m_sinks)
+		for (auto sink : *module_sinks)
 		{
 			sink->write(level, timestamp, filePath, line, message);
 		}
