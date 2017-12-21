@@ -1,7 +1,9 @@
 GLAZED_CAKE_BASE = ..
 
-TARGET = GlazedCake
 TEMPLATE = lib
+CONFIG += staticlib
+
+TARGET = GlazedCake
 
 HEADERS += \
     $$GLAZED_CAKE_BASE/include/public/sinks/SinkDebugOutput.hpp \
@@ -22,9 +24,9 @@ INCLUDEPATH += \
 QT += core
 
 win32 {
-	LIBS += -lkernel32
+    LIBS += -lkernel32
 }
 
-OBJECTS_DIR = $$GLAZED_CAKE_BASE/build
-MOC_DIR = $$GLAZED_CAKE_BASE/build
-DESTDIR = $$GLAZED_CAKE_BASE/lib
+OBJECTS_DIR = $$GLAZED_CAKE_BASE/lib
+MOC_DIR = $$GLAZED_CAKE_BASE/lib
+DESTDIR = $$GLAZED_CAKE_BASE/build
