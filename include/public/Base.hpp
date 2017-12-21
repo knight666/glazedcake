@@ -65,3 +65,36 @@
 
 	#include <Windows.h>
 #endif
+
+// String functions
+
+namespace GlazedCake {
+
+	template <size_t SizeInBytes>
+	inline void strcpy_safe(char(&buffer)[SizeInBytes], const char* source)
+	{
+	#ifdef Q_OS_WIN
+		strncpy_s(buffer, source, SizeInBytes);
+	#else
+		strncpy(buffer, source, SizeInBytes);
+	#endif
+
+		buffer[SizeInBytes - 1] = 0;
+	}
+
+	template <size_t SizeInBytes>
+	inline void printf_safe(char(&buffer)[SizeInBytes], const char* format, ...)
+	{
+		va_list args;
+		va_start(args, format);
+	#ifdef Q_OS_WIN
+		vsnprintf_s(buffer, SizeInBytes, format, args);
+	#else
+		vsnprintf(buffer, SizeInBytes, format, args);
+	#endif
+		va_end(args);
+
+		buffer[SizeInBytes - 1] = 0;
+	}
+
+};

@@ -100,7 +100,7 @@ namespace GlazedCake {
 		auto now = localtime(&current_time);
 
 		char timestamp[32] = { 0 };
-		_snprintf(timestamp, sizeof(timestamp), "%02d:%02d:%02d",
+		printf_safe(timestamp, "%02d:%02d:%02d",
 			now->tm_hour,
 			now->tm_min,
 			now->tm_sec);

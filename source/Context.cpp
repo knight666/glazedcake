@@ -36,7 +36,7 @@ namespace GlazedCake {
 		, m_module(module)
 		, m_line(line)
 	{
-		strncpy_s(m_filePath, filePath, std::min<size_t>(strlen(filePath), static_cast<size_t>(_MAX_PATH - 1)));
+		strcpy_safe(m_filePath, filePath);
 	}
 
 	Context::~Context()
