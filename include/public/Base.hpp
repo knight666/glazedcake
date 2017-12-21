@@ -42,4 +42,26 @@
 
 // Windows
 
-#include <Windows.h>
+#ifdef Q_OS_WIN
+	#ifndef _CRT_SECURE_NO_WARNINGS
+		#define _CRT_SECURE_NO_WARNINGS
+	#endif
+
+	#ifndef _CRT_SECURE_NO_DEPRECATE
+		#define _CRT_SECURE_NO_DEPRECATE
+	#endif
+
+	#ifndef UNICODE
+		#define UNICODE
+	#endif
+
+	#ifndef WIN32_LEAN_AND_MEAN
+		#define WIN32_LEAN_AND_MEAN
+	#endif
+
+	#ifndef VC_EXTRALEAN
+		#define VC_EXTRALEAN
+	#endif
+
+	#include <Windows.h>
+#endif
