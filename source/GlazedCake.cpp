@@ -30,7 +30,7 @@ namespace GlazedCake {
 	Printer* Printer::s_instance = nullptr;
 	bool Printer::s_instanceManaged = false;
 
-	const Module Printer::ModuleAll("all");
+	const Channel Printer::ChannelAny("any");
 
 	Printer::Printer()
 	{
@@ -67,10 +67,10 @@ namespace GlazedCake {
 		s_instanceManaged = false;
 	}
 
-	void Printer::addSink(QSharedPointer<Sink> sink, const Module& module /*= ModuleAll*/)
+	void Printer::addSink(QSharedPointer<Sink> sink, const Channel& channel /*= ChannelAny*/)
 	{
-		auto found = m_sinksByModule.find(module);
-		if (found != m_sinksByModule.end())
+		auto found = m_sinksByChannel.find(channel);
+		if (found != m_sinksByChannel.end())
 		{
 			found.value().push_back(sink);
 		}
@@ -78,22 +78,22 @@ namespace GlazedCake {
 		{
 			QVector<QSharedPointer<Sink>> sinks;
 			sinks.push_back(sink);
-			m_sinksByModule.insert(module, sinks);
+			m_sinksByChannel.insert(channel, sinks);
 		}
 	}
 
-	void Printer::write(const Module& module, Level level, const char* filePath, int line, const char* message)
+	void Printer::write(const Channel& channel, Level level, const char* filePath, int line, const char* message)
 	{
-		QVector<QSharedPointer<Sink>>* module_sinks = nullptr;
+		QVector<QSharedPointer<Sink>>* channel_sinks = nullptr;
 
-		auto found = m_sinksByModule.find(module);
-		if (found != m_sinksByModule.end())
+		auto found = m_sinksByChannel.find(channel);
+		if (found != m_sinksByChannel.end())
 		{
-			module_sinks = &found.value();
+			channel_sinks = &found.value();
 		}
 		else
 		{
-			module_sinks = &m_sinksByModule[ModuleAll];
+			channel_sinks = &m_sinksByChannel[ChannelAny];
 		}
 
 		auto current_time = time(0);
@@ -105,7 +105,7 @@ namespace GlazedCake {
 			now->tm_min,
 			now->tm_sec);
 
-		for (auto sink : *module_sinks)
+		for (auto sink : *channel_sinks)
 		{
 			sink->write(level, timestamp, filePath, line, message);
 		}

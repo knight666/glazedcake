@@ -9,9 +9,9 @@ HEADERS += \
     $$GLAZED_CAKE_BASE/include/public/sinks/SinkDebugOutput.hpp \
     $$GLAZED_CAKE_BASE/include/public/sinks/SinkFile.hpp \
     $$GLAZED_CAKE_BASE/include/public/Base.hpp \
+    $$GLAZED_CAKE_BASE/include/public/Channel.hpp \
     $$GLAZED_CAKE_BASE/include/public/Context.hpp \
     $$GLAZED_CAKE_BASE/include/public/Levels.hpp \
-    $$GLAZED_CAKE_BASE/include/public/Module.hpp \
     $$GLAZED_CAKE_BASE/include/public/Sink.hpp \
     $$GLAZED_CAKE_BASE/include/GlazedCake.hpp
 

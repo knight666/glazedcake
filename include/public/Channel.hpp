@@ -29,18 +29,31 @@
 
 namespace GlazedCake {
 
-	class Module
+	class Channel
 	{
 
 	public:
-		Module(const char* name)
+		static const uint MaxNameLength = 32;
+
+	public:
+		Channel(const char* name)
 		{
 			build(name, static_cast<uint>(strlen(name)));
 		}
 
-		Module(const char* name, uint nameLength)
+		Channel(const char* name, uint nameLength)
 		{
 			build(name, nameLength);
+		}
+
+		const char* getName() const
+		{
+			return m_name;
+		}
+
+		quint16 getChecksum() const
+		{
+			return m_checksum;
 		}
 
 		operator quint16() const
@@ -48,12 +61,12 @@ namespace GlazedCake {
 			return m_checksum;
 		}
 
-		bool operator < (const Module& other) const
+		bool operator < (const Channel& other) const
 		{
 			return m_checksum < other.m_checksum;
 		}
 
-		bool operator == (const Module& other) const
+		bool operator == (const Channel& other) const
 		{
 			return m_checksum == other.m_checksum;
 		}
@@ -68,26 +81,22 @@ namespace GlazedCake {
 
 			// very straight-forward case folding, pretend UTF-8 doesn't exist!
 
-			char folded[32] = { 0 };
-			uint length = std::min<uint>(static_cast<uint>(sizeof(folded)), nameLength) - 1;
+			char* dst = m_name;
+			const char* src = name;
+			uint length = std::min<uint>(nameLength, MaxNameLength) - 1;
 
 			for (uint i = 0; i < length; ++i)
 			{
-				if (name[i] >= 'A' &&
-					name[i] <= 'Z')
-				{
-					folded[i] = name[i] + 32;
-				}
-				else
-				{
-					folded[i] = name[i];
-				}
+				bool is_upper = (*src >= 'A') && (*src <= 'Z');
+				*dst++ = is_upper ? (*src | 0x20) : (*src);
+				src++;
 			}
 
-			m_checksum = qChecksum(folded, length);
+			m_checksum = qChecksum(m_name, length);
 		}
 
 	private:
+		char m_name[32] = { 0 };
 		quint16 m_checksum = 0xFFFF;
 
 	};

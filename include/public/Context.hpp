@@ -27,8 +27,8 @@
 
 #include "public/Base.hpp"
 
+#include "public/Channel.hpp"
 #include "public/Levels.hpp"
-#include "public/Module.hpp"
 
 namespace GlazedCake {
 
@@ -39,15 +39,15 @@ namespace GlazedCake {
 	{
 
 	public:
-		Context(Printer* printer, Level level, const Module& module, const char* filePath, int line);
+		Context(Printer* printer, const Channel& channel, Level level, const char* filePath, int line);
 		~Context();
 
 	private:
 		Printer* m_printer;
-		Level m_level;
-		Module m_module;
+		Channel m_channel;
+		Level m_level = Level::Information;
 		char m_filePath[_MAX_PATH] = { 0 };
-		int m_line;
+		int m_line = -1;
 		QString m_message;
 
 	};

@@ -29,11 +29,11 @@
 
 namespace GlazedCake {
 
-	Context::Context(Printer* printer, Level level, const Module& module, const char* filePath, int line)
+	Context::Context(Printer* printer, const Channel& channel, Level level, const char* filePath, int line)
 		: QTextStream(&m_message)
 		, m_printer(printer)
+		, m_channel(channel)
 		, m_level(level)
-		, m_module(module)
 		, m_line(line)
 	{
 		strcpy_safe(m_filePath, filePath);
@@ -44,7 +44,7 @@ namespace GlazedCake {
 		m_message.append('\n');
 		QByteArray message = m_message.toUtf8();
 
-		m_printer->write(m_module, m_level, m_filePath, m_line, message.constData());
+		m_printer->write(m_channel, m_level, m_filePath, m_line, message.constData());
 	}
 
 };

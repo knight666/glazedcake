@@ -27,25 +27,25 @@
 
 #include "public/Base.hpp"
 
+#include "public/Channel.hpp"
 #include "public/Context.hpp"
 #include "public/Levels.hpp"
-#include "public/Module.hpp"
 #include "public/Sink.hpp"
 
-#define GC_LOG_INFO(_module) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Information, ::GlazedCake::Module(#_module), __FILE__, __LINE__)
+#define GC_LOG_INFO(_channel) \
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Channel(#_channel), ::GlazedCake::Level::Information, __FILE__, __LINE__)
 
-#define GC_LOG_TRACE(_module)  \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Trace, ::GlazedCake::Module(#_module), __FILE__, __LINE__)
+#define GC_LOG_TRACE(_channel)  \
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Channel(#_channel), ::GlazedCake::Level::Trace, __FILE__, __LINE__)
 
-#define GC_LOG_WARN(_module) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Warning, ::GlazedCake::Module(#_module), __FILE__, __LINE__)
+#define GC_LOG_WARN(_channel) \
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Channel(#_channel), ::GlazedCake::Level::Warning, __FILE__, __LINE__)
 
-#define GC_LOG_ERROR(_module) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Error, ::GlazedCake::Module(#_module), __FILE__, __LINE__)
+#define GC_LOG_ERROR(_channel) \
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Channel(#_channel), ::GlazedCake::Level::Error, __FILE__, __LINE__)
 
-#define GC_LOG_FATAL(_module) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Level::Fatal, ::GlazedCake::Module(#_module), __FILE__, __LINE__)
+#define GC_LOG_FATAL(_channel) \
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Channel(#_channel), ::GlazedCake::Level::Fatal, __FILE__, __LINE__)
 
 namespace GlazedCake {
 
@@ -53,7 +53,7 @@ namespace GlazedCake {
 	{
 
 	public:
-		static const Module ModuleAll;
+		static const Channel ChannelAny;
 
 	public:
 		Printer();
@@ -62,20 +62,20 @@ namespace GlazedCake {
 		static Printer& get();
 		static void setInstance(Printer* instance);
 
-		inline void addSink(QSharedPointer<Sink> sink, const char* moduleName)
+		inline void addSink(QSharedPointer<Sink> sink, const char* channelName)
 		{
-			return addSink(sink, Module(moduleName));
+			return addSink(sink, Channel(channelName));
 		}
-		void addSink(QSharedPointer<Sink> sink, const Module& module = ModuleAll);
+		void addSink(QSharedPointer<Sink> sink, const Channel& channel = ChannelAny);
 
-		void write(const Module& module, Level level, const char* filePath, int line, const char* message);
+		void write(const Channel& channel, Level level, const char* filePath, int line, const char* message);
 
 	private:
 		static Printer* s_instance;
 		static bool s_instanceManaged;
 
 	private:
-		QHash<Module, QVector<QSharedPointer<Sink>>> m_sinksByModule;
+		QHash<Channel, QVector<QSharedPointer<Sink>>> m_sinksByChannel;
 
 	};
 
