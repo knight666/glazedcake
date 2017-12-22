@@ -31,6 +31,11 @@ int main(int argc, char** argv)
 	// GlazedCake does not require Qt to be initialized before you use it, but
 	// some of the "sinks" (writers of messages) _do_.
 
+	// ignore some warnings
+
+	(void)argc;
+	(void)argv;
+
 	// this message will fall through the cracks, because no sinks have been
 	// added yet
 
@@ -48,6 +53,10 @@ int main(int argc, char** argv)
 	// this message will now appear in the console!
 
 	GC_LOG_INFO("HelloWorld") << "Hello World!";
+
+	// clean up before we leave
+
+	GlazedCake::Printer::destroy();
 
 	return 0;
 }

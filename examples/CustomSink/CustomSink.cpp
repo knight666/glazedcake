@@ -78,5 +78,9 @@ int main(int argc, char** argv)
 
 	GlazedCake::Printer::get().addSink(QSharedPointer<GlazedCake::Sink>(new FatalSink()));
 
-	return app.run();
+	int result = app.run();
+
+	GlazedCake::Printer::destroy();
+
+	return result;
 }

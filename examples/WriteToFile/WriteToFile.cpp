@@ -53,5 +53,9 @@ int main(int argc, char** argv)
 	GC_LOG_INFO("Donut") << "Loved by law enforcement everywhere!";
 	GC_LOG_INFO("Breakfast") << "Part of a wholesome breakfast!";
 
+	// clean up
+
+	GlazedCake::Printer::destroy();
+
 	return 0;
 }

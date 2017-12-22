@@ -39,12 +39,14 @@ namespace GlazedCake {
 	public:
 		static const Channel ChannelAny;
 
+		static Printer& get();
+		static void setInstance(Printer* instance);
+
+		static void destroy();
+
 	public:
 		Printer();
 		~Printer();
-
-		static Printer& get();
-		static void setInstance(Printer* instance);
 
 		inline void addSink(QSharedPointer<Sink> sink, const char* channelName)
 		{

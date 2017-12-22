@@ -32,14 +32,6 @@ namespace GlazedCake {
 
 	const Channel Printer::ChannelAny("any");
 
-	Printer::Printer()
-	{
-	}
-
-	Printer::~Printer()
-	{
-	}
-
 	Printer& Printer::get()
 	{
 		if (s_instance == nullptr)
@@ -53,14 +45,28 @@ namespace GlazedCake {
 
 	void Printer::setInstance(Printer* instance)
 	{
+		destroy();
+
+		s_instance = instance;
+		s_instanceManaged = false;
+	}
+
+	void Printer::destroy()
+	{
 		if (s_instanceManaged &&
 			s_instance != nullptr)
 		{
 			delete s_instance;
+			s_instance = nullptr;
 		}
+	}
 
-		s_instance = instance;
-		s_instanceManaged = false;
+	Printer::Printer()
+	{
+	}
+
+	Printer::~Printer()
+	{
 	}
 
 	void Printer::addSink(QSharedPointer<Sink> sink, const Channel& channel /*= ChannelAny*/)
