@@ -24,11 +24,8 @@
 */
 
 #include <GlazedCake.hpp>
-#include <public/sinks/SinkDebugOutput.hpp>
 
-#include <QtCore/QCoreApplication>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMessageBox>
 
 class FatalSink
@@ -43,45 +40,43 @@ public:
 			return;
 		}
 
-		QString combined = QString("%1 %2").arg(timestamp).arg(message);
+		QString combined = QString("[%1] (%3:%4)\n\n%2").arg(timestamp).arg(message).arg(filePath).arg(line);
 		QMessageBox::critical(nullptr, "A very important message!", combined);
-	}
 
-};
+		// ideally, here's where you'd signal to your application that you want to close it
+		// instead of letting the OS handle the clean up...
 
-class MainWindow
-	: public QMainWindow
-{
-
-public:
-	MainWindow()
-	{
-		
+		::exit(0);
 	}
 
 };
 
 class DemoApp
-	: public QCoreApplication
+	: public QApplication
 {
 
 public:
+	DemoApp(int argc, char** argv)
+		: QApplication(argc, argv)
+	{
+	}
 
+	int run()
+	{
+		// FatalSink requires QApplication to already be initialized
+
+		GC_LOG_FATAL(CustomSink) << "I love you!";
+
+		return exec();
+	}
 
 };
 
-static void DemoInitialize()
-{
-	GlazedCake::Printer::get().addSink(QSharedPointer<GlazedCake::Sink>(new FatalSink()));
-
-	GC_LOG_FATAL(CustomSink) << "I love you!";
-}
-
-Q_COREAPP_STARTUP_FUNCTION(DemoInitialize)
-
 int main(int argc, char** argv)
 {
-	QCoreApplication app(argc, argv);
+	DemoApp app(argc, argv);
 
-	return app.exec();
+	GlazedCake::Printer::get().addSink(QSharedPointer<GlazedCake::Sink>(new FatalSink()));
+
+	return app.run();
 }
