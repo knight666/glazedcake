@@ -23,22 +23,65 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#pragma once
+#include <GlazedCake.hpp>
+#include <public/sinks/SinkDebugOutput.hpp>
 
-#include "public/Base.hpp"
+#include <QtCore/QCoreApplication>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMessageBox>
 
-#include "public/Levels.hpp"
+class FatalSink
+	: public GlazedCake::Sink
+{
 
-namespace GlazedCake {
-
-	class Sink
+public:
+	virtual void write(GlazedCake::Level level, const char* timestamp, const char* filePath, int line, const char* message) override
 	{
+		if (level != GlazedCake::Level::Fatal)
+		{
+			return;
+		}
 
-	public:
-		virtual ~Sink() = default;
-
-		virtual void write(Level level, const char* timestamp, const char* filePath, int line, const char* message) = 0;
-
-	};
+		QString combined = QString("%1 %2").arg(timestamp).arg(message);
+		QMessageBox::critical(nullptr, "A very important message!", combined);
+	}
 
 };
+
+class MainWindow
+	: public QMainWindow
+{
+
+public:
+	MainWindow()
+	{
+		
+	}
+
+};
+
+class DemoApp
+	: public QCoreApplication
+{
+
+public:
+
+
+};
+
+static void DemoInitialize()
+{
+	GlazedCake::Printer::get().addSink(QSharedPointer<GlazedCake::Sink>(new FatalSink()));
+
+	GC_LOG_FATAL(CustomSink) << "I love you!";
+}
+
+Q_COREAPP_STARTUP_FUNCTION(DemoInitialize)
+
+int main(int argc, char** argv)
+{
+	QCoreApplication app(argc, argv);
+
+	return app.exec();
+}

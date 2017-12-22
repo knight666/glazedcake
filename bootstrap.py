@@ -98,6 +98,8 @@ def DependencyQt():
 
 	qtlibs = [
 		'Qt5Core',
+		'Qt5Widgets',
+		'Qt5Gui',
 	]
 	for lib in qtlibs:
 		CopyFile(bin_dir + '/' + lib + '.dll')
@@ -109,15 +111,10 @@ def DependencyQt():
 	return True
 
 def GenerateSolution():
-	solution_path = os.path.abspath('GlazedCake.sln')
-	if os.path.exists(solution_path) and not ProgramOptions.force and not ProgramOptions.solution:
-		print('\tSolution found.')
-		print('')
-
-		return True
-
 	print('\tGenerating solution...')
 	print('')
+
+	solution_path = os.path.abspath('GlazedCake.sln')
 
 	SetupVSEnv()
 
@@ -175,8 +172,9 @@ if __name__ == '__main__':
 	print('[    PROJECT     ]')
 	print('')
 
-	if not GenerateSolution():
-		exit(1)
+	if ProgramOptions.solution:
+		if not GenerateSolution():
+			exit(1)
 
 	print('[      DONE      ]')
 
