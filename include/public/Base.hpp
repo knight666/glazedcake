@@ -83,7 +83,7 @@ namespace GlazedCake {
 	}
 
 	template <size_t SizeInBytes>
-	inline void printf_safe(char(&buffer)[SizeInBytes], const char* format, ...)
+	inline void sprintf_safe(char(&buffer)[SizeInBytes], const char* format, ...)
 	{
 		va_list args;
 		va_start(args, format);

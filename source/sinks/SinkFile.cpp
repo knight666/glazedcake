@@ -49,7 +49,7 @@ namespace GlazedCake {
 		}
 
 		char formatted[1024] = { 0 };
-		printf_safe(formatted, "(%s) [%s] ",
+		sprintf_safe(formatted, "(%s) [%s] ",
 			timestamp,
 			LevelToString(level));
 

@@ -12,14 +12,15 @@ HEADERS += \
     $$GLAZED_CAKE_BASE/include/public/Channel.hpp \
     $$GLAZED_CAKE_BASE/include/public/Context.hpp \
     $$GLAZED_CAKE_BASE/include/public/Levels.hpp \
+    $$GLAZED_CAKE_BASE/include/public/Printer.hpp \
     $$GLAZED_CAKE_BASE/include/public/Sink.hpp \
     $$GLAZED_CAKE_BASE/include/GlazedCake.hpp
 
 SOURCES += \
     sinks/SinkDebugOutput.cpp \
     sinks/SinkFile.cpp \
-    GlazedCake.cpp \
-    Context.cpp
+    Context.cpp \
+    Printer.cpp
 
 INCLUDEPATH += \
     $$GLAZED_CAKE_BASE/include

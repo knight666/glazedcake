@@ -23,22 +23,44 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "public/sinks/SinkDebugOutput.hpp"
+#pragma once
+
+#include "public/Base.hpp"
+
+#include "public/Channel.hpp"
+#include "public/Levels.hpp"
+#include "public/Sink.hpp"
 
 namespace GlazedCake {
 
-	void SinkDebugOutput::write(Level level, const char* timestamp, const char* filePath, int line, const char* message)
+	class Printer
 	{
-		(void)filePath;
-		(void)line;
 
-		char formatted[1024] = { 0 };
-		sprintf_safe(formatted, "(%s) [%s] ",
-			timestamp,
-			LevelToString(level));
+	public:
+		static const Channel ChannelAny;
 
-		::OutputDebugStringA(formatted);
-		::OutputDebugStringA(message);
-	}
+	public:
+		Printer();
+		~Printer();
+
+		static Printer& get();
+		static void setInstance(Printer* instance);
+
+		inline void addSink(QSharedPointer<Sink> sink, const char* channelName)
+		{
+			return addSink(sink, Channel(channelName));
+		}
+		void addSink(QSharedPointer<Sink> sink, const Channel& channel = ChannelAny);
+
+		void write(const Channel& channel, Level level, const char* filePath, int line, const char* message);
+
+	private:
+		static Printer* s_instance;
+		static bool s_instanceManaged;
+
+	private:
+		QHash<Channel, QVector<QSharedPointer<Sink>>> m_sinksByChannel;
+
+	};
 
 };

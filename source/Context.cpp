@@ -25,7 +25,7 @@
 
 #include "public/Context.hpp"
 
-#include "GlazedCake.hpp"
+#include "public/Printer.hpp"
 
 namespace GlazedCake {
 
