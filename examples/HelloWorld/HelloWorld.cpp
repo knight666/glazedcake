@@ -26,17 +26,28 @@
 #include <GlazedCake.hpp>
 #include <public/sinks/SinkDebugOutput.hpp>
 
-#include <QtCore/QCoreApplication>
-
 int main(int argc, char** argv)
 {
-	QCoreApplication app(argc, argv);
+	// GlazedCake does not require Qt to be initialized before you use it, but
+	// some of the "sinks" (writers of messages) _do_.
+
+	// this message will fall through the cracks, because no sinks have been
+	// added yet
+
+	GC_LOG_INFO("HelloWorld") << "Hello World!";
+
+	// this sink does not have any dependencies and can be used before
+	// QApplication is initialized
 
 	QSharedPointer<GlazedCake::Sink> sink(new GlazedCake::SinkDebugOutput());
 
+	// sinks can be added to specific channels, or the "any" channel by default
+
 	GlazedCake::Printer::get().addSink(sink);
 
-	GC_LOG_INFO(HelloWorld) << "Hello World!";
+	// this message will now appear in the console!
+
+	GC_LOG_INFO("HelloWorld") << "Hello World!";
 
 	return 0;
 }

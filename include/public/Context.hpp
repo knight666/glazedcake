@@ -39,6 +39,7 @@ namespace GlazedCake {
 	{
 
 	public:
+		Context(Printer* printer, const char* channelName, Level level, const char* filePath, int line);
 		Context(Printer* printer, const Channel& channel, Level level, const char* filePath, int line);
 		~Context();
 

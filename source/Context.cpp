@@ -29,6 +29,16 @@
 
 namespace GlazedCake {
 
+	Context::Context(Printer * printer, const char* channelName, Level level, const char* filePath, int line)
+		: QTextStream(&m_message)
+		, m_printer(printer)
+		, m_channel(Channel(channelName))
+		, m_level(level)
+		, m_line(line)
+	{
+		strcpy_safe(m_filePath, filePath);
+	}
+
 	Context::Context(Printer* printer, const Channel& channel, Level level, const char* filePath, int line)
 		: QTextStream(&m_message)
 		, m_printer(printer)

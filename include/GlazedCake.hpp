@@ -34,16 +34,16 @@
 #include "public/Sink.hpp"
 
 #define GC_LOG_INFO(_channel) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Channel(#_channel), ::GlazedCake::Level::Information, __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), _channel, ::GlazedCake::Level::Information, __FILE__, __LINE__)
 
 #define GC_LOG_TRACE(_channel)  \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Channel(#_channel), ::GlazedCake::Level::Trace, __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), _channel, ::GlazedCake::Level::Trace, __FILE__, __LINE__)
 
 #define GC_LOG_WARN(_channel) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Channel(#_channel), ::GlazedCake::Level::Warning, __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), _channel, ::GlazedCake::Level::Warning, __FILE__, __LINE__)
 
 #define GC_LOG_ERROR(_channel) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Channel(#_channel), ::GlazedCake::Level::Error, __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), _channel, ::GlazedCake::Level::Error, __FILE__, __LINE__)
 
 #define GC_LOG_FATAL(_channel) \
-	::GlazedCake::Context(&::GlazedCake::Printer::get(), ::GlazedCake::Channel(#_channel), ::GlazedCake::Level::Fatal, __FILE__, __LINE__)
+	::GlazedCake::Context(&::GlazedCake::Printer::get(), _channel, ::GlazedCake::Level::Fatal, __FILE__, __LINE__)

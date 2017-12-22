@@ -30,19 +30,28 @@
 
 int main(int argc, char** argv)
 {
+	// required for resolving the path to the application directory
+
 	QCoreApplication app(argc, argv);
 
-	QSharedPointer<GlazedCake::Sink> sinkPizza(new GlazedCake::SinkFile(QCoreApplication::applicationDirPath() + "/pizza.log"));
-	QSharedPointer<GlazedCake::Sink> sinkDonut(new GlazedCake::SinkFile(QCoreApplication::applicationDirPath() + "/donut.log"));
+	// create two logs, one for "pizza" and one "donut" messages
 
+	QSharedPointer<GlazedCake::Sink> sinkPizza(new GlazedCake::SinkFile(QCoreApplication::applicationDirPath() + "/pizza.log"));
 	GlazedCake::Printer::get().addSink(sinkPizza, "Pizza");
-	GlazedCake::Printer::get().addSink(sinkPizza, "Breakfast");
+
+	QSharedPointer<GlazedCake::Sink> sinkDonut(new GlazedCake::SinkFile(QCoreApplication::applicationDirPath() + "/donut.log"));
 	GlazedCake::Printer::get().addSink(sinkDonut, "Donut");
+
+	// we can reuse the sinks for messages on the "breakfast" channel
+
+	GlazedCake::Printer::get().addSink(sinkPizza, "Breakfast");
 	GlazedCake::Printer::get().addSink(sinkDonut, "Breakfast");
 
-	GC_LOG_INFO(Pizza) << "Now with *MORE* cheese!";
-	GC_LOG_INFO(Donut) << "Loved by law enforcement everywhere!";
-	GC_LOG_INFO(Breakfast) << "Part of a wholesome breakfast!";
+	// write some important info!
+
+	GC_LOG_INFO("Pizza") << "Now with *MORE* cheese!";
+	GC_LOG_INFO("Donut") << "Loved by law enforcement everywhere!";
+	GC_LOG_INFO("Breakfast") << "Part of a wholesome breakfast!";
 
 	return 0;
 }

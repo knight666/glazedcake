@@ -65,7 +65,7 @@ public:
 	{
 		// FatalSink requires QApplication to already be initialized
 
-		GC_LOG_FATAL(CustomSink) << "I love you!";
+		GC_LOG_FATAL("CustomSink") << "I love you!";
 
 		return exec();
 	}
