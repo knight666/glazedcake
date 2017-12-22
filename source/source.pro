@@ -1,9 +1,10 @@
 GLAZED_CAKE_BASE = ..
 
-TEMPLATE = lib
-CONFIG += staticlib
-
 TARGET = GlazedCake
+
+TEMPLATE = lib
+
+CONFIG += staticlib
 
 HEADERS += \
     $$GLAZED_CAKE_BASE/include/public/sinks/SinkDebugOutput.hpp \
@@ -31,6 +32,4 @@ win32 {
     LIBS += -lkernel32
 }
 
-OBJECTS_DIR = $$GLAZED_CAKE_BASE/lib
-MOC_DIR = $$GLAZED_CAKE_BASE/lib
-DESTDIR = $$GLAZED_CAKE_BASE/build
+include($$GLAZED_CAKE_BASE/config.pri)
