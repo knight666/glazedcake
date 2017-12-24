@@ -84,6 +84,17 @@ namespace GlazedCake {
 		}
 	}
 
+	QVector<QSharedPointer<GlazedCake::Sink>> Printer::getSinksByChannel(const Channel& channel) const
+	{
+		auto found = m_sinksByChannel.find(channel);
+		if (found != m_sinksByChannel.end())
+		{
+			return found.value();
+		}
+
+		return QVector<QSharedPointer<GlazedCake::Sink>>();
+	}
+
 	void Printer::write(const Channel& channel, Level level, const char* filePath, int line, const char* message)
 	{
 		QVector<QSharedPointer<Sink>>* channel_sinks = nullptr;

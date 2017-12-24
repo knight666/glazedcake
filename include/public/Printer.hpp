@@ -54,6 +54,8 @@ namespace GlazedCake {
 		}
 		void addSink(QSharedPointer<Sink> sink, const Channel& channel = ChannelAny);
 
+		QVector<QSharedPointer<Sink>> getSinksByChannel(const Channel& channel) const;
+
 		void write(const Channel& channel, Level level, const char* filePath, int line, const char* message);
 
 	private:
